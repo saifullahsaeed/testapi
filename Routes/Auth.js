@@ -9,15 +9,21 @@ const User = require('../Models/User');
 //create register route
 router.post('/register', (req, res) => {
     //create user model
-    const user = new User(req.body);
+    let user
+    try {
+        user = new User(req.body);
+        insertUser(user)
+            .then(() => {
+                res.json({ message: 'User added' });
+            })
+            .catch(err => {
+                res.status(500).json({ error: err.message });
+            });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
     //insert user
-    insertUser(user)
-        .then(() => {
-            res.json({ message: 'User added' });
-        })
-        .catch(err => {
-            res.status(500).json({ error: err.message });
-        });
+
 
 });
 
