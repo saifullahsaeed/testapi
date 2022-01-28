@@ -48,4 +48,4 @@ const login = (User) => {
     });
 }
 
-export default { insertUser, login };
+module.exports = { insertUser, login };

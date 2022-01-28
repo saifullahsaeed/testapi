@@ -1,7 +1,7 @@
 //import express
 const express = require('express');
 const app = express();
-const authRoutes = require('./Routes/auth');
+const authRoutes = require('./Routes/Auth');
 
 //user authRoutes 
 app.use('/api/auth', authRoutes);

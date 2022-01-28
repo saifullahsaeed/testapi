@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 //import oprations
-const { insertUser, login } = require('./db/Oprations');
+const { insertUser, login } = require('../db/Oprations');
 //import User model
-const User = require('./Models/User');
+const User = require('../Models/User');
 
 //create register route
 router.post('/register', (req, res) => {
