@@ -129,6 +129,128 @@ const getAllUsers = () => {
         });
     });
 }
+//insert post function takes Post model as parameter
+const insertPost = (Post) => {
+    return new Promise((resolve, reject) => {
+        db.run(`
+
+            INSERT INTO posts (title, body, user_id)
+            VALUES (?, ?, ?)
+        `, [Post.title, Post.body, Post.user_id], function (err) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+//update post function takes Post model as parameter
+const updatePost = (Post) => {
+    return new Promise((resolve, reject) => {
+        db.run(`
+
+            UPDATE posts
+            SET title = ?, body = ?, user_id = ?
+            WHERE id = ?
+        `, [Post.title, Post.body, Post.user_id, Post.id], (err) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(Post);
+        });
+    });
+}
+//delete post function takes id as parameter
+const deletePost = (id) => {
+    return new Promise((resolve, reject) => {
+        db.run(`
+
+            DELETE FROM posts
+            WHERE id = ?
+        `, [id], function (err) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(this.changes);
+        });
+    });
+}
+//find post function takes id as parameter
+const findPost = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get(`
+
+            SELECT * FROM posts
+            WHERE id = ?
+        `, [id], (err, row) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(row);
+        });
+    });
+}
+//find post by matching title  or body function takes search as parameter
+const findPostBySearchQuery = (search) => {
+    return new Promise((resolve, reject) => {
+        db.all(`
+
+            SELECT * FROM posts
+            WHERE title LIKE ? OR body LIKE ?
+        `, [`%${search}%`, `%${search}%`], (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+
+//get all posts function
+const getAllPosts = () => {
+    //skip password column from query
+    return new Promise((resolve, reject) => {
+        db.all(`
+            SELECT id,title,body,user_id FROM posts
+        `, (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+//comment function takes Comment model as parameter
+const insertComment = (Comment) => {
+    return new Promise((resolve, reject) => {
+        db.run(`
+
+            INSERT INTO comments (body, post_id, user_id)
+            VALUES (?, ?, ?)
+        `, [Comment.body, Comment.post_id, Comment.user_id], function (err) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+//delete comment function takes id as parameter
+const deleteComment = (id) => {
+    return new Promise((resolve, reject) => {
+        db.run(`
+
+            DELETE FROM comments
+            WHERE id = ?
+        `, [id], function (err) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(this.changes);
+        });
+    });
+}
+
 
 
 module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser };
