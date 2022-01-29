@@ -3,19 +3,22 @@ const sqlite3 = require('sqlite3').verbose();
 const env = require('dotenv').config();
 
 //env variable for db path
-const dbPath = process.env.DATABASE_PATH || 'database.sqlite';
-
-//opening db
+const dbPath = process.env.DATABASE_PATH + process.env.DATABASE_NAME + '.db';
+if (!dbPath) {
+    console.error('DATABASE_PATH environment variable not set');
+    process.exit(1);
+}
+//db connection
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.log(err.message);
+        console.error(err.message);
+        process.exit(1);
     }
     console.log('Connected to the database.');
 });
-
 //creating table
 let createTables = db.serialize(() => {
-    user = db.run('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL,created_at TEXT default CURRENT_TIMESTAMP, updated_at TEXT default CURRENT_TIMESTAMP)');
+    user = db.run('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL,type text default user, created_at TEXT default CURRENT_TIMESTAMP, updated_at TEXT default CURRENT_TIMESTAMP)');
     if (user) {
         console.log('Table created Users');
     }

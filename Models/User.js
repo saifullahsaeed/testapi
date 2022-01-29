@@ -43,11 +43,11 @@ class Login {
             1000, 64, `sha512`).toString(`hex`);
     };
     // Method to check the entered password is correct or not 
-    validPassword = function(password, hashs) {
-        var hash = crypto.pbkdf2Sync(password,
-            this.salt, 1000, 64, `sha512`).toString(`hex`);
-        return hashs === hash;
-    };
+    isValidPassword = async function(password) {
+        const user = this;
+        const compare = await crypto.compare(password, user.password);
+        return compare;
+    }
 }
 
 module.exports = { User, Login };

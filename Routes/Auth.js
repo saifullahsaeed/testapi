@@ -31,7 +31,7 @@ router.post('/registers', (req, res) => {
 
 });
 //login route
-router.post('/login', async (req, res) => {
+router.post('/login', async(req, res) => {
     //create user model 
     try {
         let Userobj = new Login(req.body.email, req.body.password);
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 
                 return res.status(400).json({ error: 'Invalid Email or Password' });
             }
-        }).catch(err => { })
+        }).catch(err => {})
 
     } catch (err) {
         return res.status(400).json({ error: err.message });

@@ -7,11 +7,12 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon index.js",
         "migrate": "node db/migrations.js",
-        "jwt": "node Utils/Jwt.js"
+        "jwt": "node Utils/Jwt.js",
+        "db": "node ./db/db.js"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/saifullahsaeed/nodejstestapi.git"
+        "url": "git+https://github.com/saifullahsaeed/testapi.git"
     },
     "keywords": [
         "nodejstestapi",
@@ -28,8 +29,11 @@
         "body-parser": "^1.19.1",
         "dotenv": "^14.3.2",
         "express": "^4.17.2",
+        "express-session": "^1.17.2",
         "jsonwebtoken": "^8.5.1",
         "nodemon": "^2.0.15",
+        "passport": "^0.5.2",
+        "passport-jwt": "^4.0.0",
         "sqlite3": "^5.0.2"
     }
 }
