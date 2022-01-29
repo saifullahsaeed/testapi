@@ -16,10 +16,15 @@ Technologies used:
 
 Installation:
 
-    -npm install
-    -npm run dev
+     npm install
+     npm run dev
 
 Migration:
+
     <code>
-    npm run migrate
+      npm run migrate
     </code>
+
+SUPPORT:
+    - [Support]
+    - [issue]
