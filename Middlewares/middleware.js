@@ -1,8 +1,4 @@
-//authenticated check
-const { User } = require('../models/user');
-const jwt = require('../Middlewares/jwt');
 const { checkIfPostIsMadeByUser } = require('../db/Oprations');
-const e = require('express');
 
 class AuthMidleware {
     //check if user is admin
