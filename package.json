@@ -33,6 +33,6 @@
         "nodemon": "^2.0.15",
         "passport": "^0.5.2",
         "passport-http-bearer": "^1.0.1",
-        "sqlite3": "^5.0.2",
+        "sqlite3": "^5.0.2"
     }
 }
