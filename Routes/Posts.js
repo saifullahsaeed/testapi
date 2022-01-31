@@ -2,6 +2,8 @@
 const router = require('express').Router();
 const { getAllPosts, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery } = require('../db/Oprations');
 const Post = require('../models/Post');
+const AuthMidleware = require('../Middlewares/middleware');
+const passport = require('passport');
 
 router.get('/', (req, res) => {
     //get all the posts
@@ -13,9 +15,9 @@ router.get('/', (req, res) => {
 });
 
 //insert post
-router.post('/', (req, res) => {
+router.post('/', passport.authenticate('bearer', { session: false }), (req, res) => {
     try {
-        var postObj = new Post(req.body.title, req.body.body, '1');
+        var postObj = new Post(req.body.title, req.body.body, req.user.id);
         //insert post
         insertPost(postObj).then((post) => {
             return res.status(200).json({ 'message': 'Post added' });
@@ -29,9 +31,9 @@ router.post('/', (req, res) => {
 
 });
 //update post
-router.put('/:id', (req, res) => {
+router.put('/:id', passport.authenticate('bearer', { session: false }), AuthMidleware.postOwnership, (req, res) => {
     try {
-        var postObj = new Post(req.body.title, req.body.body, '1');
+        var postObj = new Post(req.body.title, req.body.body, req.user.id);
         postObj.id = req.params.id;
         //update post
         updatePost(postObj).then((post) => {
@@ -44,7 +46,7 @@ router.put('/:id', (req, res) => {
     }
 });
 //delete post
-router.delete('/:id', (req, res) => {
+router.delete('/:id', passport.authenticate('bearer', { session: false }), AuthMidleware.postOwnership, (req, res) => {
     //delete post
     deletePost(req.params.id).then((post) => {
         return res.status(200).json({ 'message': 'Post deleted' });

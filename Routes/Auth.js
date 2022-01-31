@@ -55,7 +55,7 @@ router.post('/login', function(req, res) {
 });
 //logout route
 router.post('/logout', passport.authenticate('bearer', { session: false }), (req, res) => {
-    //expires token
+
     return res.status(200).json({ message: 'Logged out' });
 });
 module.exports = router;

@@ -4,21 +4,20 @@ const router = express.Router();
 const authenticated = require('../Middlewares/middleware');
 //import all functions from db/Oprations.js
 const {
-    insertUser,
-    login,
-    getUser,
+    findUser,
     getAllUsers,
     updateUser,
     deleteUser
 } = require('../db/Oprations');
 //import User model
 const { User } = require('../Models/User');
+const passport = require('passport');
 
 
 
 
 //update user route
-router.post('/update', async(req, res) => {
+router.post('/update', passport.authenticate('bearer', { session: false }), async(req, res) => {
     //create user model
     try {
         let Userobj = new User(req.body.name, req.body.email, req.body.password);
@@ -47,9 +46,12 @@ router.get('/', (req, res) => {
         });
 });
 //get user route
-router.get('/:id', (req, res) => {
-    getUser(req.params.id)
-        .then(user => {
+router.get('/find/:id', (req, res) => {
+    (req.params.id)
+    findUser.then(user => {
+            //trim the password
+            user.password = undefined;
+
             return res.status(200).json({ user });
         })
         .catch(err => {
@@ -58,14 +60,19 @@ router.get('/:id', (req, res) => {
 });
 
 //delete me
-router.delete('/me', (req, res) => {
+router.delete('/me', passport.authenticate('bearer', { session: false }), (req, res) => {
     console.log(req.user);
     deleteUser(req.user.id)
         .then(user => {
-            return res.status(200).json({ user });
+            return res.status(200).json({ message: 'User deleted successfully' });
         })
         .catch(err => {
             return res.status(500).json({ error: err.message });
         });
+});
+//get me
+router.get('/me', passport.authenticate('bearer', { session: false }), (req, res) => {
+    //trim the password
+    return res.status(200).json({ user: req.user });
 });
 module.exports = router;

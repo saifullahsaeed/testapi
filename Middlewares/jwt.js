@@ -10,29 +10,19 @@ class Jwt {
     }
 
     signToken(payload) {
-        const token = jwt.sign(payload,
-            this.secret, {
-                expiresIn: '1h',
-                algorithm: 'HS256'
-            },
-            function(err, token) {
-                if (err) {
-                    console.log(err);
-                    return err;
-                } else {
-                    console.log(token);
-                    return token;
-                }
-            });
+        //base64 encoded secret
+        console.log(this.secret);
+        return jwt.sign(payload, this.secret, {
+            expiresIn: '1h',
+            algorithm: 'HS512'
+        });
 
     }
 
     verify(token) {
-        console.log(process.env['JWT_SECRET']);
-        return jwt.verify(token, this.secret, {
-            algorithm: 'HMACSHA256',
-            complete: true
-        });
+        //base64 encoded secret
+        //convert to string
+        return jwt.verify(token, this.secret + '');
     }
 }
 

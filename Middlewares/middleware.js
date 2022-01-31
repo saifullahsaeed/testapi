@@ -1,6 +1,8 @@
 //authenticated check
 const { User } = require('../models/user');
 const jwt = require('../Middlewares/jwt');
+const { checkIfPostIsMadeByUser } = require('../db/Oprations');
+const e = require('express');
 
 class AuthMidleware {
     //token check
@@ -66,15 +68,20 @@ class AuthMidleware {
     postOwnership(req, res, next) {
         try {
             let post = req.params.id;
-            if (post == req.user.id) {
-                next();
-            } else {
+            checkIfPostIsMadeByUser(req.user.id, post).then(result => {
+                if (result) {
+                    next();
+                } else {
+                    return res.status(401).json({ error: 'Unauthorized' });
+                }
+            }).catch(err => {
                 return res.status(401).json({ error: 'Unauthorized' });
-            }
+            });
         } catch (err) {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).json({ error: err });
         }
     }
+
 
 }
 

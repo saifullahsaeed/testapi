@@ -174,18 +174,32 @@ const deletePost = (id) => {
             });
         });
     }
-    //find post function takes id as parameter
+    //find post function takes id as parameter with comments
 const findPost = (id) => {
+
         return new Promise((resolve, reject) => {
             db.get(`
-
-            SELECT * FROM posts
-            WHERE id = ?
-        `, [id], (err, row) => {
+                SELECT * FROM posts
+                WHERE id = ?
+            `, [id], (err, row) => {
                 if (err) {
                     return reject(err);
                 }
-                resolve(row);
+                if (!row) {
+                    return reject(new Error('Post not found'));
+                }
+                db.all(`
+                    SELECT * FROM comments
+                    WHERE post_id = ?
+                `, [id], (err, rows) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve({
+                        post: row,
+                        comments: rows
+                    });
+                });
             });
         });
     }
@@ -207,15 +221,30 @@ const findPostBySearchQuery = (search) => {
 
 //get all posts function
 const getAllPosts = () => {
-        //skip password column from query
-        return new Promise((resolve, reject) => {
-            db.all(`
+    //skip password column from query
+    return new Promise((resolve, reject) => {
+        db.all(`
             SELECT id,title,body,user_id FROM posts
         `, (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+
+//check if post is by made by user function takes user_id and post_id as parameter
+const checkIfPostIsMadeByUser = (user_id, post_id) => {
+        return new Promise((resolve, reject) => {
+            db.get(`
+            SELECT * FROM posts
+            WHERE id = ? AND user_id = ?
+        `, [post_id, user_id], (err, row) => {
                 if (err) {
                     return reject(err);
                 }
-                resolve(rows);
+                resolve(row);
             });
         });
     }
@@ -226,7 +255,7 @@ const insertComment = (Comment) => {
 
             INSERT INTO comments (body, post_id, user_id)
             VALUES (?, ?, ?)
-        `, [Comment.body, Comment.post_id, Comment.user_id], function(err) {
+        `, [Comment.comment, Comment.post_id, Comment.user_id], function(err) {
                 if (err) {
                     return reject(err);
                 }
@@ -252,4 +281,4 @@ const deleteComment = (id) => {
 
 
 
-module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment };
+module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser, checkIfPostIsMadeByUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment };

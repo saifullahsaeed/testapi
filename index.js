@@ -6,6 +6,7 @@ const session = require('express-session');
 const authRoutes = require('./Routes/Auth');
 const userRoutes = require('./Routes/User');
 const postRoutes = require('./Routes/Posts');
+const commentRoutes = require('./Routes/Comments');
 const bodyParser = require('body-parser');
 var log = require('./libs/log')(module);
 
@@ -30,6 +31,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 //post router
 app.use('/api/post', postRoutes);
+//comment router
+app.use('/api/comment', commentRoutes);
+
 
 
 
