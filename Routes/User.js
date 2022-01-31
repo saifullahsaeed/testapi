@@ -1,6 +1,7 @@
 //add boilerplate code fo router
 const express = require('express');
 const router = express.Router();
+const authenticated = require('../Middlewares/middleware');
 //import all functions from db/Oprations.js
 const {
     insertUser,
@@ -14,8 +15,10 @@ const {
 const { User } = require('../Models/User');
 
 
+
+
 //update user route
-router.post('/update', async (req, res) => {
+router.post('/update', async(req, res) => {
     //create user model
     try {
         let Userobj = new User(req.body.name, req.body.email, req.body.password);
@@ -26,7 +29,7 @@ router.post('/update', async (req, res) => {
             } else {
                 return res.status(400).json({ error: 'User not found' });
             }
-        }).catch(err => { })
+        }).catch(err => {})
 
     } catch (err) {
         return res.status(400).json({ error: err.message });
@@ -53,9 +56,11 @@ router.get('/:id', (req, res) => {
             return res.status(500).json({ error: err.message });
         });
 });
-//Delete user route
-router.delete('/:id', (req, res) => {
-    deleteUser(req.params.id)
+
+//delete me
+router.delete('/me', (req, res) => {
+    console.log(req.user);
+    deleteUser(req.user.id)
         .then(user => {
             return res.status(200).json({ user });
         })
@@ -63,5 +68,4 @@ router.delete('/:id', (req, res) => {
             return res.status(500).json({ error: err.message });
         });
 });
-
 module.exports = router;

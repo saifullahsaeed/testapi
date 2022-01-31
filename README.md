@@ -1,10 +1,9 @@
-# testapi
+# Testapi
 
 This is a test api for frontend developers to test there app behaviour 
 
 Might be useful to test the app behaviour in the browser.
 
-Migrate database before running the api.
 
 Technologies used:
 
@@ -67,6 +66,6 @@ Follwoing are the endpoints:
     /api/v1/admin/users/:id/comments/:id - GET
     /api/v1/admin/users/:id/comments/:id - PUT
     /api/v1/admin/users/:id/comments/:id - DELETE
-    
+
 
 

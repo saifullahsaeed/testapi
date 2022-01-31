@@ -3,8 +3,9 @@ const sqlite3 = require('sqlite3').verbose();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
+
 //use db path from env
-const dbPath = process.env.DATABASE_PATH + process.env.DATABASE_NAME + '.db';
+const dbPath = process.env.DATABASE_PATH || './db/database.db';
 
 //open db
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -20,7 +21,7 @@ const insertUser = (User) => {
         //email must be unique
         db.get(`
             SELECT * FROM users WHERE email = ?
-        `, [User.email], (err, row) => {
+        `, [User.username], (err, row) => {
             if (err) {
                 reject(err);
             }
@@ -31,11 +32,11 @@ const insertUser = (User) => {
                 db.run(`
             INSERT INTO users (name, email, password)
             VALUES (?, ?, ?)
-        `, [User.name, User.email, User.password], function(err) {
+        `, [User.name, User.username, User.password], function(err) {
                     if (err) {
                         return reject(err);
                     }
-                    db.get(`SELECT id FROM users WHERE email = ?`, [User.email], (err, row) => {
+                    db.get(`SELECT id FROM users WHERE email = ?`, [User.username], (err, row) => {
                         resolve(row);
                     });
                 });
@@ -46,35 +47,22 @@ const insertUser = (User) => {
 
 //login function takes User model as parameter
 const login = (Login) => {
-    //use passport local strategy
+    //check if credentials are valid
     return new Promise((resolve, reject) => {
-        passport.use(new LocalStrategy(
-            function(username, password, done) {
-                db.get(`
-                    SELECT * FROM users WHERE email = ?
-                `, [username], (err, row) => {
-                    if (err) {
-                        return done(err);
-                    }
-                    if (!row) {
-                        return done(null, false, { message: 'Incorrect username.' });
-                    }
-                    if (row.password !== password) {
-                        return done(null, false, { message: 'Incorrect password.' });
-                    }
-                    return done(null, row);
-                });
-            }
-        ));
-        passport.authenticate('local', (err, user, info) => {
+        db.get(`
+            SELECT * FROM users WHERE email = ?
+        `, [Login.username], (err, row) => {
             if (err) {
                 return reject(err);
             }
-            if (!user) {
-                return reject(info);
+            if (!row) {
+                return reject(null, false, { message: 'Incorrect username.' });
             }
-            return resolve(user);
-        })({ body: Login });
+            if (Login.password !== row.password) {
+                return reject(null, false, { message: 'Incorrect password.' });
+            }
+            return resolve(row);
+        });
     });
 };
 
@@ -264,4 +252,4 @@ const deleteComment = (id) => {
 
 
 
-module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser };
+module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment };

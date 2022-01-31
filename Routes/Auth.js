@@ -1,6 +1,7 @@
 //add express router
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 //import oprations
 const { insertUser, login } = require('../db/Oprations');
 //import User model
@@ -16,8 +17,7 @@ router.post('/registers', (req, res) => {
         Userobj.encryptPassword();
         insertUser(Userobj)
             .then((user) => {
-                //send jwt token
-                return res.status(200).json({ token: jwt.sign({ id: user.id, password: user.password }) });
+                return res.status(200).json({ 'message': 'User Registerd Login now' });
 
             })
             .catch(err => {
@@ -31,29 +31,30 @@ router.post('/registers', (req, res) => {
 
 });
 //login route
-router.post('/login', async(req, res) => {
-    //create user model 
+router.post('/login', function(req, res) {
     try {
-        let Userobj = new Login(req.body.email, req.body.password);
-        Userobj.encryptPassword();
-        await login(Userobj).then(user => {
-            if (user) {
-                console.log(user);
+        let Loginobj = new Login(req.body.username, req.body.password);
+        Loginobj.encryptPassword();
+        login(Loginobj).then((user) => {
+            //send jwt token
+            passport.authenticate(
+                'bearer', {
+                    session: false
+                },
+            )
+            const token = jwt.signToken({ id: user.id, email: user.email, name: user.name });
+            return res.status(200).json({ 'token': token, 'assigned_at': Date.now(), 'expires_in': 3600 });
 
-                return res.status(200).json({ token: jwt.sign({ id: user.id, email: user.email, password: user.password }) });
-            } else {
-                console.log(user);
-
-                return res.status(400).json({ error: 'Invalid Email or Password' });
-            }
-        }).catch(err => {})
-
+        }).catch(err => {
+            return res.status(500).json({ error: err });
+        });
     } catch (err) {
         return res.status(400).json({ error: err.message });
     }
+
 });
 //logout route
-router.post('/logout', (req, res) => {
+router.post('/logout', passport.authenticate('bearer', { session: false }), (req, res) => {
     //expires token
     return res.status(200).json({ message: 'Logged out' });
 });

@@ -1,41 +1,33 @@
 const crypto = require('crypto');
 class User {
-    constructor(name = '', email, password) {
+    constructor(name = '', username = '', password = '') {
             //validate all fields
-            if (!email || !password) {
+            if (!username || !password) {
                 throw new Error('All fields are required');
             }
             this.name = name;
-            this.email = email;
+            this.username = username;
             this.password = password;
         }
         //hash password
     encryptPassword = function() {
-
-        // Creating a unique salt for a particular user 
-        this.salt = crypto.randomBytes(16).toString('hex');
-
-        // Hashing user's salt and password with 1000 iterations, 
-
+        this.salt = process.env['SALT'];
         this.password = crypto.pbkdf2Sync(this.password, this.salt,
             1000, 64, `sha512`).toString(`hex`);
     };
-
-
-
 }
 class Login {
-    constructor(email, password) {
-        if (!email || !password) {
+    constructor(username, password) {
+        if (!username || !password) {
             throw new Error('All fields are required');
         }
-        this.email = email;
+        this.username = username;
         this.password = password;
     }
     encryptPassword = function() {
 
         // Creating a unique salt for a particular user 
-        this.salt = crypto.randomBytes(16).toString('hex');
+        this.salt = process.env['SALT'];
 
         // Hashing user's salt and password with 1000 iterations, 
 
