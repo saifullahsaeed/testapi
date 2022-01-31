@@ -26,9 +26,9 @@ Migration:
 
 Link To App:
 
-    <code>
+
       https://testapibysaif.herokuapp.com/
-    </code>
+
 
 
 Link to the Documentation:
