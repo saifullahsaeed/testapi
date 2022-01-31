@@ -68,3 +68,17 @@ const bulkInsertPosts = () => {
 };
 
 bulkInsertPosts();
+//do 2 or 3 commants on eatch post
+const bulkInsertComments = () => {
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        db.each('SELECT * FROM posts', (err, post) => {
+            for (let i = 0; i < 2; i++) {
+                db.run('INSERT INTO comments (body, user_id, post_id) VALUES (?, ?, ?)', ['Comment ' + i, 1, post.id]);
+            }
+        });
+        db.run('COMMIT');
+    });
+};
+
+bulkInsertComments();
