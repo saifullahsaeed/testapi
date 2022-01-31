@@ -55,3 +55,16 @@ const seed = () => {
         console.log(err);
     });
 };
+
+//bulk insert posts
+const bulkInsertPosts = () => {
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        for (let i = 0; i < 100; i++) {
+            db.run('INSERT INTO posts (title, body, user_id) VALUES (?, ?, ?)', ['Post ' + i, 'Body ' + i, 1]);
+        }
+        db.run('COMMIT');
+    });
+};
+
+bulkInsertPosts();
