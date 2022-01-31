@@ -2,7 +2,7 @@
 // Language: javascript
 const passport = require('passport');
 const { deleteComment, insertComment } = require('../db/Oprations');
-const Comment = require('../models/Comment');
+const Comment = require('../Models/Comment');
 
 
 const router = require('express').Router();
