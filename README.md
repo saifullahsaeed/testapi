@@ -24,48 +24,13 @@ Migration:
       npm run migrate
     </code>
 
+Link to the Documentation:
 
-Follwoing are the endpoints:
-    /api/v1/auth/login - POST
-    /api/v1/auth/signup - POST
-    /api/v1/auth/logout - POST
-    /api/v1/auth/reset-password/:token - POST
+    <a href="https://documenter.getpostman.com/view/12277565/UVeDsSxF?version=latest">https://documenter.getpostman.com/view/12277565/UVeDsSxF?version=latest</a>
 
-    User endpoints:
-    /api/v1/users/:id - GET
-    /api/v1/users/:id - PUT
-    /api/v1/users/:id - DELETE
+Follow us on instagram:
 
-    Post endpoints:
-    /api/v1/posts - GET
-    /api/v1/posts - POST
-    /api/v1/posts/:id - GET
-    /api/v1/posts/:id - PUT
-    /api/v1/posts/:id - DELETE
-
-    Comment endpoints:
-    /api/v1/comments - GET
-    /api/v1/comments - POST
-    /api/v1/comments/:id - GET
-    /api/v1/comments/:id - PUT
-    /api/v1/comments/:id - DELETE
-
-    admin endpoints:
-    /api/v1/admin/users - GET
-    /api/v1/admin/users - POST
-    /api/v1/admin/users/:id - GET
-    /api/v1/admin/users/:id - PUT
-    /api/v1/admin/users/:id - DELETE
-    /api/v1/admin/users/:id/posts - GET
-    /api/v1/admin/users/:id/posts - POST
-    /api/v1/admin/users/:id/posts/:id - GET
-    /api/v1/admin/users/:id/posts/:id - PUT
-    /api/v1/admin/users/:id/posts/:id - DELETE
-    /api/v1/admin/users/:id/comments - GET
-    /api/v1/admin/users/:id/comments - POST
-    /api/v1/admin/users/:id/comments/:id - GET
-    /api/v1/admin/users/:id/comments/:id - PUT
-    /api/v1/admin/users/:id/comments/:id - DELETE
+    <a href="https://www.instagram.com/saifullahsaeed_/">Saif</a>
 
 
 

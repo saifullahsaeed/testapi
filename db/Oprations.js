@@ -65,6 +65,17 @@ const login = (Login) => {
         });
     });
 };
+//delete all users function
+const deleteAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM users`, (err) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve();
+        });
+    });
+};
 
 //UPDATE user function takes User model as parameter
 const updateUser = (User) => {
@@ -265,20 +276,37 @@ const insertComment = (Comment) => {
     }
     //delete comment function takes id as parameter
 const deleteComment = (id) => {
-    return new Promise((resolve, reject) => {
-        db.run(`
+        return new Promise((resolve, reject) => {
+            db.run(`
 
             DELETE FROM comments
             WHERE id = ?
         `, [id], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+    //get statistics function which shows total number of users,posts and comments respectively
+const getStatistics = () => {
+    return new Promise((resolve, reject) => {
+        db.all(`
+            SELECT COUNT(*) AS users, COUNT(*) AS posts, COUNT(*) AS comments
+            FROM users
+            JOIN posts
+            JOIN comments
+        `, (err, rows) => {
             if (err) {
                 return reject(err);
             }
-            resolve(this.changes);
+            resolve(rows);
         });
     });
 }
 
 
 
-module.exports = { insertUser, login, deleteUser, findUser, getAllUsers, updateUser, checkIfPostIsMadeByUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment };
+
+module.exports = { insertUser, login, deleteUser, deleteAllUsers, findUser, getAllUsers, updateUser, checkIfPostIsMadeByUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment, getStatistics };

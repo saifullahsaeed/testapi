@@ -46,7 +46,7 @@ router.post('/login', function(req, res) {
             return res.status(200).json({ 'token': token, 'assigned_at': Date.now(), 'expires_in': 3600 });
 
         }).catch(err => {
-            return res.status(500).json({ error: err });
+            return res.status(500).json({ error: 'Invalid Username Or Password' });
         });
     } catch (err) {
         return res.status(400).json({ error: err.message });

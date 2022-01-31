@@ -7,6 +7,8 @@ const authRoutes = require('./Routes/Auth');
 const userRoutes = require('./Routes/User');
 const postRoutes = require('./Routes/Posts');
 const commentRoutes = require('./Routes/Comments');
+const adminRoutes = require('./Routes/Admin');
+const AuthMidleware = require('./Middlewares/middleware');
 const bodyParser = require('body-parser');
 var log = require('./libs/log')(module);
 
@@ -33,6 +35,9 @@ app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
 //comment router
 app.use('/api/comment', commentRoutes);
+//admin router
+app.use('/api/admin', passport.authenticate('bearer', { session: false }), AuthMidleware.isAdmin, adminRoutes);
+
 
 
 
