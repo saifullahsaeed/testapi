@@ -45,6 +45,6 @@ app.use('/api/admin', passport.authenticate('bearer', { session: false }), AuthM
 
 
 //listen on port 5000 for requests
-app.listen(6000, () => {
+app.listen(process.env.PORT, () => {
     console.log('listening on port 6000');
 });
