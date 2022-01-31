@@ -22,7 +22,7 @@
     "author": "saifullahsaeed",
     "license": "GPL-3.0",
     "bugs": {
-        "url": "https://github.com/saifullahsaeed/nodejstestapi/issues"
+        "url": "https://github.com/saifullahsaeed/testapi/issues"
     },
     "homepage": "https://github.com/saifullahsaeed/nodejstestapi#readme",
     "dependencies": {
