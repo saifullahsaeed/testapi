@@ -1,7 +1,7 @@
 //express router
 const router = require('express').Router();
 const { getAllPosts, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery } = require('../db/Oprations');
-const Post = require('../models/Post');
+const Post = require('../Models/Post');
 const AuthMidleware = require('../Middlewares/middleware');
 const passport = require('passport');
 
