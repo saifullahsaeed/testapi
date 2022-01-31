@@ -28,7 +28,7 @@ try {
         if (post) {
             console.log('Table created Posts');
         }
-        blocked = db.run('CREATE TABLE IF NOT EXISTS blocked (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, blocked_id INTEGER NOT NULL, created_at TEXT default CURRENT_TIMESTAMP, updated_at TEXT default CURRENT_TIMESTAMP)');
+        blocked = db.run('CREATE TABLE IF NOT EXISTS blocked (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, created_at TEXT default CURRENT_TIMESTAMP, updated_at TEXT default CURRENT_TIMESTAMP)');
         if (blocked) {
             console.log('Table created Blocked');
         }

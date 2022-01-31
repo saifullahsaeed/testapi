@@ -111,14 +111,22 @@ const deleteUser = (id) => {
 
 //find user function takes id as parameter
 const findUser = (id) => {
+    //get user by id and join blocked table to get blocked users if user is blocked give user blocked property
     return new Promise((resolve, reject) => {
         db.get(`
-
-            SELECT * FROM users
-            WHERE id = ?
+            SELECT users.*, blocked.user_id as blocked
+            FROM users
+            LEFT JOIN blocked
+            ON users.id = blocked.user_id
+            WHERE users.id = ?
         `, [id], (err, row) => {
             if (err) {
                 return reject(err);
+            }
+            if (!row.blocked) {
+                row.blocked = false;
+            } else {
+                row.blocked = true;
             }
             resolve(row);
         });
@@ -136,6 +144,35 @@ const getAllUsers = () => {
                     return reject(err);
                 }
                 resolve(rows);
+            });
+        });
+    }
+    //block user function takes user_id as parameter
+const blockUser = (user_id) => {
+        return new Promise((resolve, reject) => {
+            db.run(`
+            INSERT INTO blocked (user_id)
+            VALUES (?)
+        `, [user_id], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+    //unblock user function takes user_id as parameter
+const unblockUser = (user_id) => {
+
+        return new Promise((resolve, reject) => {
+            db.run(`
+            DELETE FROM blocked
+            WHERE user_id = ?
+        `, [user_id], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this.changes);
             });
         });
     }
@@ -309,4 +346,4 @@ const getStatistics = () => {
 
 
 
-module.exports = { insertUser, login, deleteUser, deleteAllUsers, findUser, getAllUsers, updateUser, checkIfPostIsMadeByUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment, getStatistics };
+module.exports = { insertUser, login, deleteUser, blockUser, unblockUser, deleteAllUsers, findUser, getAllUsers, updateUser, checkIfPostIsMadeByUser, insertPost, updatePost, deletePost, findPost, findPostBySearchQuery, getAllPosts, insertComment, deleteComment, getStatistics };

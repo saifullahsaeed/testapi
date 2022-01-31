@@ -13,8 +13,13 @@ module.exports = function(passport) {
         function(token, done) {
             console.log(token);
             let user = findOne({ token: token });
+            //check if user is blocked
+
             user.then(user => {
                 user.password = undefined;
+                if (user.blocked) {
+                    return done(null, false);
+                }
                 return done(null, user);
             }).catch(err => {
                 return done(null, false);

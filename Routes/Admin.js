@@ -1,7 +1,7 @@
 //boilerplate for express router
 // Language: javascript
 const router = require('express').Router();
-const { getStatistics, deleteUser, deletePost, deleteComment } = require('../db/Oprations');
+const { getStatistics, deleteUser, deletePost, deleteComment, blockUser, unblockUser } = require('../db/Oprations');
 
 //delete all users
 router.delete('/deleteallusers', (req, res) => {
@@ -49,6 +49,25 @@ router.delete('/deletecomment/:id', (req, res) => {
         return res.status(500).json({ error: err });
     });
 });
+//block a user
+router.delete('/blockuser/:id', (req, res) => {
+    //block a user
+    blockUser(req.params.id).then((user) => {
+        return res.status(200).json({ 'message': 'User blocked' });
+    }).catch(err => {
+        return res.status(500).json({ error: err });
+    });
+});
+//unblock a user
+router.delete('/unblockuser/:id', (req, res) => {
+    //unblock a user
+    unblockUser(req.params.id).then((user) => {
+        return res.status(200).json({ 'message': 'User unblocked' });
+    }).catch(err => {
+        return res.status(500).json({ error: err });
+    });
+});
+
 
 
 module.exports = router;
