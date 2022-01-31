@@ -27,7 +27,7 @@ Migration:
 Link to the Documentation:
 <a href="https://documenter.getpostman.com/view/12277565/UVeDsSxF?version=latest">https://documenter.getpostman.com/view/12277565/UVeDsSxF?version=latest</a>
 
-Follow us on instagram:
+Follow me on instagram:
 
 <a href="https://www.instagram.com/saifullahsaeed_/">Saif</a>
 
